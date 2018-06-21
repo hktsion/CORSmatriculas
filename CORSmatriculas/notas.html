@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Extra - DWEC</title>
+	<link rel="stylesheet" href="css/css.css">
+	<script src="js/app.js"></script>
+</head>
+<body>
+	<main>
+		<h2>Notas - Extra DWEC</h2>
+		<div id="buscar">
+			<label for="intro">Buscar</label>
+			<!-- (1) -->
+			<input type="text" id="intro" name="intro" value="daa0005@correo.net" autofocus>
+			<!-- (2) -->
+			<button>Buscar</button>
+		</div>
+		<div id="todos" class="esconder">			
+		<!-- select TODOS -->			
+		</div>
+		<div id="info" class="esconder">
+			<!-- (3) -->
+			<!-- 
+			  Respuesta
+			  [
+   				{ "Matrícula": "DAA0005", "Nombre": "Carmen", "Apellido1": "Toledo", "Apellido2": "Serrano", "Sexo": "M", "Nif": "51773361Q", "Correo": "daa0005@correo.net" },
+    			{ "Matrícula": "DAA0005", "Módulo 1": 85, "Módulo 2": 56, "Módulo 3": 66, "Módulo 4": 71 }
+  			]
+  			HTML generado a partir de ella
+				<table>
+			    <caption> Carmen Toledo Serrano </caption>
+			    <thead>
+			      <tr>
+			        <th>Módulo</th>
+			        <th>Nota</th>
+			      </tr>
+			    </thead>
+			    <tbody><tr><td>Módulo 1</td><td>85</td></tr><tr><td>Módulo 2</td><td>56</td></tr><tr><td>Módulo 3</td><td>66</td></tr><tr><td>Módulo 4</td><td>71</td></tr></tbody>        
+		      <tfoot>
+		        <tr><td>Media</td><td>6,95</td></tr>
+		      </tfoot>        
+		    </table>			
+			 -->		
+		</div>
+	</main>
+	<script>
+		notas.iniciar();
+	</script>
+</body>
+</html>

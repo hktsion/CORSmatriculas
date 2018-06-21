@@ -1,0 +1,11 @@
+"Matrícula;Nombre;Apellido1;Apellido2;Sexo;Nif;Correo
+DAA0001;Francisco José;Bernad;Llamas;H;40324766Q;daa0001@correo.net
+DAA0002;María Ángeles;Rodríguez;Rojas;M;69234503H;daa0002@correo.net
+DAA0003;José Manuel;Álvaro;Domingo;H;55479616M;daa0003@correo.net
+DAA0004;María Dolores;Chico;Vicente;M;10057100M;daa0004@correo.net
+DAA0005;Carmen;Toledo;Serrano;M;51773361Q;daa0005@correo.net
+DAA0006;Antonio;Pedraza;Álvarez;H;21525879H;daa0006@correo.net
+DAA0007;Antonio;Andrés;López;H;60310627G;daa0007@correo.net
+DAA0008;Cristina;Román;Barrera;M;16739207Z;daa0008@correo.net
+DAA0009;Francisco;Ramos;Manso;H;98842535N;daa0009@correo.net
+"

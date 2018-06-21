@@ -1,0 +1,88 @@
+
+body, table, div, p, select, input, button, h1 {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+main {
+  margin: 2em;
+  font-family: Arial, sans-serif;
+  font-size: 1.1em;
+}
+
+input, button, select {
+  background-color: #fff;
+  height: 34px;
+  border: 1px solid #ccc;
+  padding: 6px;
+  font-size: 1em;
+}
+
+button {
+  background-color: #769bf5;
+  color: white;
+  border: none;
+}
+
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-top: 1em;
+}
+
+caption {
+  text-align: center;
+  margin-bottom: 0;
+  color: maroon;
+  font-weight: bold;
+}
+
+
+caption+thead {margin-top: 0;}
+th,
+td {
+  padding: 6px;
+}
+
+th {
+  background: lightseagreen;
+  color: #fff;
+}
+
+tr>td:last-child  {text-align: right;}
+
+tr:first-child th:first-child { border-top-left-radius: 6px; }
+tr:first-child th:last-child { border-top-right-radius: 6px; }
+
+td {
+  border-right: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+
+td:first-child { border-left: 1px solid lightgrey; }
+tr:nth-child(even) { background:whitesmoke; }
+tfoot tr:last-child td:first-child { border-bottom-left-radius: 6px; }
+tfoot tr:last-child td:last-child { border-bottom-right-radius: 6px; }
+
+tfoot {
+  background-color: lightgoldenrodyellow;
+  font-weight: bold;
+}
+
+#error,  #info{
+  background-color: lightpink;
+  padding: 0.2em;
+  border-radius: 0.2em;
+  margin: 0.2em 0;
+}
+.esconder {
+  display: none;
+}
+
+#info {
+  background-color: transparent;
+  width: 12em;  
+}
