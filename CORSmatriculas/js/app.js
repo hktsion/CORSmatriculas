@@ -1,12 +1,30 @@
+//Creamos 1 variable global que es el objeto que desencadena todo (mediante el método iniciar())
 var notas = {};
+
+/**
+* Constante que contiene la ruta donde están los archivos que solicitamos;
+* NOTA IMPORTANTE
+* Se han tenido que crear 3 archivos en la carpeta SERVER (alumnos, notas y todos).
+* Cada uno de estos archivos es llamado dependiendo de si en el input buscamos por email, matricula o TODOS.
+* Se hace esto porque no podemos acceder a la URL original del exámen mediante el puerto 3000;
+**/
 const urlServidor = "http://localhost/CORSmatriculas/server/";
 
-(function(d, notas){
-	'use strict';
+(function(d, notas){ //Comenzamos con una CLAUSURE que recibe 2 parámetros: el document (que renombramos a 'd' y nuestro objeto 'notas');
 
-	let uri = '';
-	let documento = '';
+	'use strict';  	//activamos el modo estricto que habilita la optimización del código;
 
+	let uri = '';  // recoge el dato introducido en el input (será un email, matrícula o el string TODOS);
+	let documento = ''; // recoge el documento al que llamaremos en el servidor (alumnos.txt, notas.txt o todos.txt);
+
+
+	/**
+	* inicialiarApp :: Es el único método al que llama el objeto notas cuando invoca al método 'iniciar';
+	*  - Inicializa la aplicación cuando el DOM se ha renderizado;
+	*  - @variable :: input  >> nodo input del DOM;
+	* -  @variable :: button >> nodo button del DOM;
+	*  - @function :: agregarListenersAlDOM >> agrega los listeners keypress (al input) & click (al button);
+	**/
 	function inicialiarApp(){
 		d.addEventListener('DOMContentLoaded', function(){
 
@@ -17,7 +35,15 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		}, true);
 	}
 
-	//Agrega los listeners al DOM
+
+	/**
+	* agregarListenersAlDOM :: Añade listeners a los nodos que recibe como parámetros y hace la petición CORS;
+	*  - @param    			:: inp        >> nodo input del DOM;
+	*  - @variable 			:: btn        >> nodo button del DOM;
+	*  - @listener 			:: keypress   >> añade el listener keypress al input. Cuando se pulsa ENTER, evalúa si se cumple el patrón para el string introducido.
+	*  - @listener 			:: click      >> añade el listener click al button. Cuando se hace CLICK evalúa si se cumple el patrón para el string introducido en el input;
+ 	*  - @function 			:: pedirDatos >> realiza la petición CORS;
+	**/
 	function agregarListenersAlDOM(inp, btn){
 		let url = '';
 		let texto_a_buscar ='';
@@ -34,6 +60,7 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 			}
 		}, true);
 
+
 		btn.addEventListener('click', function(){
 			let texto_a_buscar = inp.value.trim();
 			url = gestionExpReg(texto_a_buscar);
@@ -45,6 +72,13 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		}, true);
 	}
 
+
+	/**
+	* gestionExpReg	:: Evalúa si un string cunple o no un patrón y devuelve false si no se cumple el patrón o la URL de la petición CORS si el patrón se cumple.
+	*  - @param    	:: formato    >> el string de entrada que hay que validar (es nuestro string introducido en el input de búsqueda);
+	*  - @pattern  	::            >> distintos patrones, para email, matrícula y el string TODOS;
+	*  - @param    	:: url        >> la URL para realizar la petición mediante CORS;
+	**/
 	function gestionExpReg(formato){
 		let pattern_matricula = /[A-Z]{3}\d{4}/; 
 		let pattern_todos = /TODOS/; 
@@ -65,6 +99,14 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		return false;
 	}
 
+
+	/**
+	* pedirDatos :: Crea un objeto XMLHttpRequest que realiza una petición POST a la URL (petición) que entra como parámetro. Llama a una función de callback al finalizar para formatear los datos;
+	*  - @param  :: peticion 		 >> el string de entrada que hay que validar (es nuestro string introducido en el input de búsqueda);
+	*  - @param  :: callback 		 >> función callback o función "llamar de vuelta" para formatear los datos que llegan de la petición POST;
+	*  - @param  :: url      		 >> la URL para realizar la petición mediante CORS;
+	*  - @result :: xhr.responseText >> resultado en formato string de los datos recibidos del server;
+	**/
 	function pedirDatos(peticion, callback){
 		
 		let xhr = new XMLHttpRequest();
@@ -86,6 +128,15 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		xhr.onerror = function() { alert('Error de respuesta en la petición CORS'); };
 	}
 
+
+
+	/**
+	* dom_crearTabla :: Busca un elemeto dento de un objeto;
+	*  - @param      :: datos_alumno  >> objeto que contiene los datos del alumno encontrado en la petición CORS una vez que se ha encontrado una coincidencia;
+	*  - @clausula   ::               >> se añade una clausula if. Si el objeto viene vacío o no se está buscando un email, se interrumpe el programa y se alerta al usuario. 'NOTAS', es decir, la búsqueda por MATRICULA, no está implementada, por eso se inluye en el bucle IF (habría que implementarlo);
+	*  - @variable   :: info_alumno   >> contiene los datos del alumno (num. matrícula, nombre, apellidos, tlf...)
+	*  - @variable   :: notas         >> (no confundir con el objeto 'notas' que es el que inicializa la app). Contiene las notas de cada uno de los módulos;
+	**/
 	function dom_crearTabla(datos_alumno){
 		let info = d.getElementById('info');
 		console.log(datos_alumno);
@@ -167,12 +218,27 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		info.appendChild(table);
 	}
 
+	/**
+	* tratamientoDatos  :: función CALLBACK
+	*  - @param         :: respuestaJSON  >> datos recibidos de la petiicón CORS;
+	*  - @function      :: eliminarHijos  >> Elimina los hijos de un nodo pasando por parámetro el ID del nodo;
+	*  - @function      :: formatearDatos >> formatea el dato (string) que llega de la petición CORS;
+	*  - @function      :: dom_crearTabla >> crea los nodos necesarios para construir una tabla e inserta los datos (formateados) que se reciben del SERVER;
+	**/
 	function tratamientoDatos(respuestaJSON){
 		eliminarHijos('info');
 		let datos_formateados = formatearDatos(respuestaJSON);
 		dom_crearTabla(datos_formateados);
 	}
 
+
+	/**
+	* formatearDatos :: Formatea el string que llega desde la petición CORS;
+	*  - @param      :: datos               >> string
+	*  - @array      :: result              >> acumula los datos a buscar  mediante buscarDatoEnObjetos o buscarDatoEnString;
+	*  - @function   :: buscarDatoEnObjetos >> recorre los datos formateados de la petición CORS, buscando el dato insertado en el input de búsqueda del formulario;
+	*  - @return     :: devuelve el objeto donde se encuentra el dato buscado (el alumno y sus datos);
+	**/
 	function formatearDatos(datos){
 		let result = new Array();
 		let primer_caracter = (datos.trim()).substring(0, 1);
@@ -184,6 +250,13 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		return result;
 	}
 
+
+	/**
+	* buscarDatoEnObjetos  :: Busca un elemeto dento de un objeto;
+	*  - @param      	   :: obj                 >> el objeto en el que se realizará la búsqueda;
+	*  - @array      	   :: datos_encontrados   >> array donde se acumularán las coincidencias
+	*  - @return     	   :: devuelve los datos encontrados si hay alguna coincidencia;
+	**/
 	function buscarDatoEnObjetos(obj){
 		let datos_encontrados = new Array();
 
@@ -206,12 +279,22 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		return datos_encontrados;
 	}
 
+	/**
+	* buscarDatoEnString :: Formatea y busca elemeentos dentro de un string
+	* FUNCIÓN NO DESARROLLADA
+	**/
 	function buscarDatoEnString(str){
 		alert('La function no está desarrollada,\nsolo funciona para emails.\n\nEl resultado de la petición a formatear es:\n\n' + str);
 	}
 
+
 	function CSV2JSON(csv, sepRegistro, sepCampo){}
 
+
+	/**
+	* eliminarHijos :: Elimina todos los hijos de un nodo. Mientras el nodo tenga hijos, va eliminando el primer hijo;
+	*  - @param     :: nodo 		 >> el id del elemento nodo del que queremos eliminar los hijos;
+	**/
 	function eliminarHijos(nodo){
 		let domnode = d.getElementById(nodo);
 		while (domnode.firstChild) {
@@ -219,6 +302,9 @@ const urlServidor = "http://localhost/CORSmatriculas/server/";
 		}
 	}
 
+	/**
+	* iniciar :: Único método del objeto 'notas' y único método aplicable dentro del script; Inicializa la aplicación;
+	**/
 	notas.iniciar = function(){ inicialiarApp(); };
 }(document, notas));
 
